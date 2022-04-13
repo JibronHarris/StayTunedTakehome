@@ -1,4 +1,7 @@
 const router = require('express').Router();
+const auth = require('./auth');
+
+const createError = require('http-errors');
 
 router.get('/', async (req, res, next) => {
   res.send('HOME');
@@ -6,6 +9,18 @@ router.get('/', async (req, res, next) => {
 
 router.get('/cats', async (req, res, next) => {
   res.send('Cats');
+});
+
+router.use('/auth', auth);
+router.use(async (req, res, next) => {
+  next(createError.NotFound('Route not Found'));
+});
+
+router.use((err, req, res, next) => {
+  res.status(err.status || 500).json({
+    status: false,
+    message: err.message,
+  });
 });
 
 module.exports = router;
