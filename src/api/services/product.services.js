@@ -37,10 +37,19 @@ function createProductReminder(product, userId) {
   });
 }
 
+function getRemindersForProduct(id) {
+  return db.product.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 module.exports = {
   getAllProducts,
   findProductById,
   createProduct,
   updateProductById,
   createProductReminder,
+  getRemindersForProduct,
 };
