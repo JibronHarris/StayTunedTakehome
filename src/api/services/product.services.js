@@ -27,9 +27,20 @@ function updateProductById(id, data) {
   });
 }
 
+function createProductReminder(product, userId) {
+  return db.productReminder.create({
+    data: {
+      initialPrice: product.price,
+      userId: userId,
+      productId: product.id,
+    },
+  });
+}
+
 module.exports = {
   getAllProducts,
   findProductById,
   createProduct,
   updateProductById,
+  createProductReminder,
 };

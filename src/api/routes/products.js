@@ -6,6 +6,7 @@ const {
   createProduct,
   updateProductById,
   findProductById,
+  createProductReminder,
 } = require('../services/product.services');
 
 router.get('/allProducts', async (req, res, next) => {
@@ -42,6 +43,20 @@ router.put('/:productId/edit', isAuthenticated, async (req, res, next) => {
     } else {
       res.status(403).send('Unauthorized access');
     }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/:productId/addReminder', isAuthenticated, async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const product = await findProductById(productId);
+    if (!productId) {
+      res.status(400).send('Product doesnt exist, cant create a reminder :(');
+    }
+    const productReminder = await createProductReminder(product, req.user);
+    res.json(productReminder);
   } catch (err) {
     next(err);
   }
