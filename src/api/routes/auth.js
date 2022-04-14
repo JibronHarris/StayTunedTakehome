@@ -26,7 +26,12 @@ router.post('/register', async (req, res, next) => {
     const user = await createUserByEmailAndPassword({ name, email, password });
     const jti = uuidv4();
     const { accessToken, refreshToken } = generateTokens(user, jti);
-    await addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id });
+    await addRefreshTokenToWhitelist({
+      jti,
+      refreshToken,
+      userId: user.id,
+      role: user.role,
+    });
 
     res.json({
       accessToken,
@@ -64,6 +69,7 @@ router.post('/login', async (req, res, next) => {
       jti,
       refreshToken,
       userId: existingUser.id,
+      role: existingUser.role,
     });
 
     res.json({

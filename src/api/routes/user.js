@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { isAuthenticated } = require('../middleware/authentication');
+const { isAuthenticated, isAdmin } = require('../middleware/authentication');
 const { findUserById } = require('../services/user.services');
 
 router.get('/profile', isAuthenticated, async (req, res, next) => {
@@ -11,6 +11,10 @@ router.get('/profile', isAuthenticated, async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+router.get('/test', isAdmin, async (req, res, next) => {
+  res.send('Admin');
 });
 
 module.exports = router;
