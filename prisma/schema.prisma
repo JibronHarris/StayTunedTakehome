@@ -15,6 +15,7 @@ model User {
   email        String         @unique
   name         String?
   password     String
+  role         String         @default("User")
   RefreshToken RefreshToken[]
 }
 
@@ -22,6 +23,7 @@ model RefreshToken {
   id          String   @id @unique @default(uuid())
   hashedToken String
   userId      String
+  role        String   @default("User")
   User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   revoked     Boolean  @default(false)
   createdAt   DateTime @default(now())
