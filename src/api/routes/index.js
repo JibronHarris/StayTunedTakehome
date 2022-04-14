@@ -3,7 +3,7 @@ const createError = require('http-errors');
 const bodyParser = require('body-parser');
 const auth = require('./auth');
 const user = require('./user');
-const product = require('./products');
+const product = require('./product');
 
 router.use('/auth', auth);
 router.use('/user', user);
