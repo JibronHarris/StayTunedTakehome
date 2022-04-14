@@ -18,8 +18,18 @@ function findProductById(id) {
   });
 }
 
+function updateProductById(id, data) {
+  return db.product.update({
+    where: {
+      id: id,
+    },
+    data,
+  });
+}
+
 module.exports = {
   getAllProducts,
   findProductById,
   createProduct,
+  updateProductById,
 };
