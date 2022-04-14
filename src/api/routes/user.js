@@ -14,7 +14,7 @@ router.get('/profile', isAuthenticated, async (req, res, next) => {
 });
 
 router.get('/test', isAuthenticated, async (req, res, next) => {
-  if (req.user == 'Admin') {
+  if (req.role == 'Admin') {
     res.status(200).send('Hey Youre an Admin!');
   } else {
     res.status(403).send('Unauthorized access');
