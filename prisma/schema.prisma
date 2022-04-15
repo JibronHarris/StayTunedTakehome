@@ -11,13 +11,13 @@ datasource db {
 }
 
 model User {
-  id              String            @id @unique @default(uuid())
-  email           String            @unique
-  name            String?
-  password        String
-  role            String            @default("User")
-  RefreshToken    RefreshToken[]
-  ProductReminder ProductReminder[]
+  id               String            @id @unique @default(uuid())
+  email            String            @unique
+  name             String?
+  password         String
+  role             String            @default("User")
+  RefreshToken     RefreshToken[]
+  productReminders ProductReminder[]
 }
 
 model RefreshToken {
@@ -32,11 +32,11 @@ model RefreshToken {
 }
 
 model Product {
-  id              String            @id @unique @default(uuid())
-  name            String
-  price           Int
-  imageUrl        String
-  ProductReminder ProductReminder[]
+  id               String            @id @unique @default(uuid())
+  name             String
+  price            Int
+  imageUrl         String
+  productReminders ProductReminder[]
 }
 
 model ProductReminder {

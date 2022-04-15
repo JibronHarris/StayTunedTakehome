@@ -42,6 +42,9 @@ function getRemindersForProduct(id) {
     where: {
       id,
     },
+    include: {
+      productReminders: true,
+    },
   });
 }
 

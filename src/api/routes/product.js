@@ -76,12 +76,11 @@ router.post('/:productId/addReminder', isAuthenticated, async (req, res, next) =
 router.get('/:productId/allReminders', async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const product = await findProductById(productId);
-    if (!productId) {
+    const productWithReminders = await getRemindersForProduct(productId);
+    if (!productWithReminders) {
       res.status(400).send('Product doesnt exist, cant get reminders :(');
     }
-    const reminders = getRemindersForProduct(productId);
-    res.json(reminders);
+    res.json(productWithReminders);
   } catch (err) {
     next(err);
   }
