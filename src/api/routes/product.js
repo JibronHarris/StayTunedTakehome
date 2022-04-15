@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const res = require('express/lib/response');
 const { isAuthenticated } = require('../middleware/authentication');
+const { sendEmailReminders } = require('../../utils/mailer');
 const {
   getAllProducts,
   createProduct,
@@ -50,6 +51,8 @@ router.put('/:productId/edit', isAuthenticated, async (req, res, next) => {
       const { name, price, imageUrl } = req.body;
       const data = { name, price, imageUrl };
       const product = await updateProductById(productId, data);
+      const productWithReminders = await getRemindersForProduct(productId);
+      sendEmailReminders(productWithReminders.productReminders, product.price);
       res.json(product);
     } else {
       res.status(403).send('Unauthorized access');
