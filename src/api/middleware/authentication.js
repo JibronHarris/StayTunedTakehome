@@ -13,6 +13,7 @@ function isAuthenticated(req, res, next) {
     const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
     req.payload = payload;
     req.role = payload.role;
+    req.user = payload.userId;
   } catch (err) {
     res.status(401);
     if (err.name == 'TokenExpiredError') {
