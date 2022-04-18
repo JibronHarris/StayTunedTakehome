@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const res = require('express/lib/response');
 const { isAuthenticated } = require('../middleware/authentication');
+const { sendEmailReminders } = require('../../utils/mailer');
 const {
   getAllProducts,
   createProduct,
@@ -36,7 +37,8 @@ router.post('/add', isAuthenticated, async (req, res, next) => {
       const product = await createProduct({ name, price, imageUrl });
       res.json(product);
     } else {
-      res.status(403).send('Unauthorized access');
+      res.status(403);
+      throw new Error('Unauthorized access');
     }
   } catch (err) {
     next(err);
@@ -47,12 +49,15 @@ router.put('/:productId/edit', isAuthenticated, async (req, res, next) => {
   try {
     const { productId } = req.params;
     if (req.role == 'Admin') {
-      const { name, price, imageUrl } = req.body;
+      const { name, price, imageUrl, sendAlert } = req.body;
       const data = { name, price, imageUrl };
       const product = await updateProductById(productId, data);
+      const productWithReminders = await getRemindersForProduct(productId);
+      if (sendAlert) sendEmailReminders(productWithReminders.productReminders, product.price);
       res.json(product);
     } else {
-      res.status(403).send('Unauthorized access');
+      res.status(403);
+      throw new Error('Unauthorized access');
     }
   } catch (err) {
     next(err);
@@ -78,7 +83,8 @@ router.get('/:productId/allReminders', async (req, res, next) => {
     const { productId } = req.params;
     const productWithReminders = await getRemindersForProduct(productId);
     if (!productWithReminders) {
-      res.status(400).send('Product doesnt exist, cant get reminders :(');
+      res.status(400);
+      throw new Error('Product doesnt exist, cant get reminders :(');
     }
     res.json(productWithReminders);
   } catch (err) {

@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const createError = require('http-errors');
-const bodyParser = require('body-parser');
 const auth = require('./auth');
 const user = require('./user');
 const product = require('./product');

@@ -8,10 +8,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
-app.post('/test', (req, res) => {
-  res.json(req.body);
-});
-
 app.use('/', route);
 
 app.listen(port, () => {
