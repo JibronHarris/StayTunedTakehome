@@ -26,7 +26,7 @@ const TestComponent = () => {
             </li>
 
             <li class="pure-menu-item menu-item-divided pure-menu-selected">
-              <a href="#" class="pure-menu-link">
+              <a href="/#" class="pure-menu-link">
                 Services
               </a>
             </li>

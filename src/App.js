@@ -1,10 +1,10 @@
-import TestComponent from './components/Layout';
+import Layout from './components/Layout';
 
 function App() {
   return (
     <div>
       <header>
-        <TestComponent />
+        <Layout />
       </header>
     </div>
   );
