@@ -1,5 +1,4 @@
-import './css/App.css';
-import TestComponent from './components/TestComponent';
+import TestComponent from './components/Layout';
 
 function App() {
   return (
