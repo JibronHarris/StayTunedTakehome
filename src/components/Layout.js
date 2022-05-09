@@ -8,22 +8,22 @@ const Layout = () => {
   return (
     <BrowserRouter>
       <div id="layout">
-        <a href="#menu" id="menuLink" class="menu-link">
+        <a href="#menu" id="menuLink" className="menu-link">
           <span></span>
         </a>
 
         <div id="menu">
-          <div class="pure-menu">
-            <a class="pure-menu-heading" href="/#">
+          <div className="pure-menu">
+            <a className="pure-menu-heading" href="/#">
               The Store
             </a>
 
-            <ul class="pure-menu-list">
-              <li class="pure-menu-item">
-                <Link to="/" class="pure-menu-link">
+            <ul className="pure-menu-list">
+              <li className="pure-menu-item">
+                <Link to="/" className="pure-menu-link">
                   Home
                 </Link>
-                <Link to="/products" class="pure-menu-link">
+                <Link to="/products" className="pure-menu-link">
                   All Products
                 </Link>
               </li>
