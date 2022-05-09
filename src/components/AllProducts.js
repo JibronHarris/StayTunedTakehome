@@ -18,22 +18,6 @@ const AllProducts = () => {
     fetchData();
   }, []);
 
-  const getProducts = () => {
-    const options = {
-      method: 'GET',
-      url: 'http://localhost:8000/product/allProducts',
-      withCredentials: false,
-    };
-    axios
-      .request(options)
-      .then((response) => {
-        return products;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   return (
     <div>
       <p>All Product</p>
