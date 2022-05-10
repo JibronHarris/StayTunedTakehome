@@ -9,7 +9,7 @@ const AllProducts = () => {
     const fetchData = async () => {
       const options = {
         method: 'GET',
-        url: 'http://localhost:8000/product/allProducts',
+        url: '/product/allProducts',
         withCredentials: false,
       };
       const res = await axios.request(options);
