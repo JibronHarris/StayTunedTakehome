@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const res = require('express/lib/response');
-const { isAuthenticated } = require('../middleware/authentication');
+const createError = require('http-errors');
+const { isAuthenticated, isLoggedIn } = require('../middleware/authentication');
 const { sendEmailReminders } = require('../../utils/mailer');
 const {
   getAllProducts,
@@ -18,6 +18,14 @@ router.get('/allProducts', async (req, res, next) => {
     res.json(products);
   } catch (err) {
     next(err);
+  }
+});
+
+router.get('/test', async (req, res, next) => {
+  if (isLoggedIn(req)) {
+    res.send('You are logged in!');
+  } else {
+    res.send('You are NOT logged in!');
   }
 });
 
@@ -106,6 +114,10 @@ router.get('/:productId/allReminders', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+router.use(async (req, res, next) => {
+  next(createError.NotFound('Route not Found'));
 });
 
 module.exports = router;
