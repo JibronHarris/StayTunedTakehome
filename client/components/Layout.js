@@ -1,8 +1,8 @@
 import '../css/Layout.css';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Home from '../components/Home';
-import AllProducts from '../components/AllProducts';
+import Home from './Home';
+import AllProducts from './AllProducts';
 
 const Layout = () => {
   return (
