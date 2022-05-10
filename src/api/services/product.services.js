@@ -27,11 +27,20 @@ function updateProductById(id, data) {
   });
 }
 
-function createProductReminder(product, userId) {
+function deleteProductById(id) {
+  return db.product.delete({
+    where: {
+      id: id,
+    },
+  });
+}
+
+function createProductReminder(product, userId, email) {
   return db.productReminder.create({
     data: {
       initialPrice: product.price,
       userId: userId,
+      email: email,
       productId: product.id,
     },
   });
@@ -53,6 +62,7 @@ module.exports = {
   findProductById,
   createProduct,
   updateProductById,
+  deleteProductById,
   createProductReminder,
   getRemindersForProduct,
 };

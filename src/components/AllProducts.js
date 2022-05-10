@@ -30,7 +30,7 @@ const AllProducts = () => {
         {products.map((product) => {
           return (
             <div>
-              <li>{`${product.name}: ${product.price}`}</li>
+              <li key={product.id}>{`${product.name}: ${product.price}`}</li>
               <img src={product.imageUrl} alt="game cover design"></img>
               <button className="pure-button" onClick={() => productPriceDropAlert(product)}>
                 Get Reminded on Price Drop!

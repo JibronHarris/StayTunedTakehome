@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const res = require('express/lib/response');
-const { isAuthenticated } = require('../middleware/authentication');
+const createError = require('http-errors');
+const { isAuthenticated, isLoggedIn } = require('../middleware/authentication');
 const { sendEmailReminders } = require('../../utils/mailer');
 const {
   getAllProducts,
@@ -9,6 +9,7 @@ const {
   findProductById,
   createProductReminder,
   getRemindersForProduct,
+  deleteProductById,
 } = require('../services/product.services');
 
 router.get('/allProducts', async (req, res, next) => {
@@ -17,6 +18,14 @@ router.get('/allProducts', async (req, res, next) => {
     res.json(products);
   } catch (err) {
     next(err);
+  }
+});
+
+router.get('/test', async (req, res, next) => {
+  if (isLoggedIn(req)) {
+    res.send('You are logged in!');
+  } else {
+    res.send('You are NOT logged in!');
   }
 });
 
@@ -32,7 +41,7 @@ router.get('/:productId', async (req, res, next) => {
 
 router.post('/add', isAuthenticated, async (req, res, next) => {
   try {
-    if (req.role == 'Admin') {
+    if (req.role === 'Admin') {
       const { name, price, imageUrl } = req.body;
       const product = await createProduct({ name, price, imageUrl });
       res.json(product);
@@ -48,7 +57,7 @@ router.post('/add', isAuthenticated, async (req, res, next) => {
 router.put('/:productId/edit', isAuthenticated, async (req, res, next) => {
   try {
     const { productId } = req.params;
-    if (req.role == 'Admin') {
+    if (req.role === 'Admin') {
       const { name, price, imageUrl, sendAlert } = req.body;
       const data = { name, price, imageUrl };
       const product = await updateProductById(productId, data);
@@ -64,14 +73,29 @@ router.put('/:productId/edit', isAuthenticated, async (req, res, next) => {
   }
 });
 
-router.post('/:productId/addReminder', isAuthenticated, async (req, res, next) => {
+router.delete('/:productId/delete', isAuthenticated, async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    if (req.role === 'Admin') {
+      const product = await deleteProductById(productId);
+      res.json(product);
+    } else {
+      res.status(403);
+      throw new Error('Unauthorized access');
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/:productId/addReminder', async (req, res, next) => {
   try {
     const { productId } = req.params;
     const product = await findProductById(productId);
     if (!productId) {
       res.status(400).send('Product doesnt exist, cant create a reminder :(');
     }
-    const productReminder = await createProductReminder(product, req.user);
+    const productReminder = await createProductReminder(product, req.user, req.body.email);
     res.json(productReminder);
   } catch (err) {
     next(err);
@@ -90,6 +114,10 @@ router.get('/:productId/allReminders', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+router.use(async (req, res, next) => {
+  next(createError.NotFound('Route not Found'));
 });
 
 module.exports = router;
