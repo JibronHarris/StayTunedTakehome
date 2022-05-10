@@ -35,11 +35,12 @@ function deleteProductById(id) {
   });
 }
 
-function createProductReminder(product, userId) {
+function createProductReminder(product, userId, email) {
   return db.productReminder.create({
     data: {
       initialPrice: product.price,
       userId: userId,
+      email: email,
       productId: product.id,
     },
   });

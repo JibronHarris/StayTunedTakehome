@@ -88,14 +88,14 @@ router.delete('/:productId/delete', isAuthenticated, async (req, res, next) => {
   }
 });
 
-router.post('/:productId/addReminder', isAuthenticated, async (req, res, next) => {
+router.post('/:productId/addReminder', async (req, res, next) => {
   try {
     const { productId } = req.params;
     const product = await findProductById(productId);
     if (!productId) {
       res.status(400).send('Product doesnt exist, cant create a reminder :(');
     }
-    const productReminder = await createProductReminder(product, req.user);
+    const productReminder = await createProductReminder(product, req.user, req.body.email);
     res.json(productReminder);
   } catch (err) {
     next(err);
