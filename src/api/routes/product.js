@@ -9,6 +9,7 @@ const {
   findProductById,
   createProductReminder,
   getRemindersForProduct,
+  deleteProductById,
 } = require('../services/product.services');
 
 router.get('/allProducts', async (req, res, next) => {
@@ -32,7 +33,7 @@ router.get('/:productId', async (req, res, next) => {
 
 router.post('/add', isAuthenticated, async (req, res, next) => {
   try {
-    if (req.role == 'Admin') {
+    if (req.role === 'Admin') {
       const { name, price, imageUrl } = req.body;
       const product = await createProduct({ name, price, imageUrl });
       res.json(product);
@@ -48,12 +49,27 @@ router.post('/add', isAuthenticated, async (req, res, next) => {
 router.put('/:productId/edit', isAuthenticated, async (req, res, next) => {
   try {
     const { productId } = req.params;
-    if (req.role == 'Admin') {
+    if (req.role === 'Admin') {
       const { name, price, imageUrl, sendAlert } = req.body;
       const data = { name, price, imageUrl };
       const product = await updateProductById(productId, data);
       const productWithReminders = await getRemindersForProduct(productId);
       if (sendAlert) sendEmailReminders(productWithReminders.productReminders, product.price);
+      res.json(product);
+    } else {
+      res.status(403);
+      throw new Error('Unauthorized access');
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.delete('/:productId/delete', isAuthenticated, async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    if (req.role === 'Admin') {
+      const product = await deleteProductById(productId);
       res.json(product);
     } else {
       res.status(403);
