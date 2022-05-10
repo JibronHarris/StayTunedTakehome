@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
-app.use('/', route);
+app.use('/api', route);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
